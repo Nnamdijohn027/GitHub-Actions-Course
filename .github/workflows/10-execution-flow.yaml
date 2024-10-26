@@ -3,9 +3,9 @@ name: 10 - Controlling the Execution Flow
 on:
   workflow_dispatch:
     inputs:
-      pass-unit-tests:
+      pass-unit-tests: 
         type: boolean
-        default: false
+        default: true
 
 jobs:
   # Job 1: Lint and Build
