@@ -1,12 +1,6 @@
 name: 02 - Workflow Events
 
 on:
-  push:
-    branches:
-      - main  # Adjust if your default branch is different
-  pull_request:
-  schedule:
-    - cron: '0 * * * *'  # Runs every hour
   workflow_dispatch:
 
 jobs:
