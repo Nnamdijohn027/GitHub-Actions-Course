@@ -1,4 +1,5 @@
 name: 07 - Using Expressions
+run-name: 07 - Using Expressions | DEBUG - ${{ inputs.debug && 'ON' || 'OFF' }}
 
 on:
   push:
@@ -6,7 +7,7 @@ on:
     inputs:
       debug:
         type: boolean
-        default: true
+        default: false
 
 jobs:
   echo:
