@@ -7,14 +7,14 @@ jobs:
   backwards-compatibility:
     runs-on: ubuntu-latest
     strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-        node: [16.x, 18.x, 20.x, 21.x]
-        include:
-          - os: ubuntu-latest
-            node: 21.x
-            tag: experimental
+        fail-fast: true
+        matrix:
+          os: [ubuntu-latest, windows-latest]
+          node: [16.x, 18.x, 20.x, 21.x]
+          include:
+            - os: ubuntu-latest
+              node: 21.x
+              tag: experimental
     name: ${{ matrix.os }}-${{ matrix.node }}
 
     steps:
