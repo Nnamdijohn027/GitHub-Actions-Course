@@ -6,31 +6,19 @@ on:
 jobs:
   backwards-compatibility:
     runs-on: ubuntu-latest
+    # Previous backwards-compatibility job configuration...
+
+  include-example:
+    runs-on: ubuntu-latest
     strategy:
-        fail-fast: true
-        matrix:
-          os: [ubuntu-latest, windows-latest]
-          node: [16.x, 18.x, 20.x, 21.x]
-          include:
-            - os: ubuntu-latest
-              node: 21.x
-              tag: experimental
-    name: ${{ matrix.os }}-${{ matrix.node }}
-
+      matrix:
+        color: [red, green]
+        shape: [circle, square]
+        size: [small, large]
+        include:
+          - color: red
+            shape: triangle
+    name: ${{ matrix.color }}-${{ matrix.shape }}-${{ matrix.size }}
     steps:
-      - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node }}
-
-      - name: Fail if experimental
-        if: ${{ matrix.tag == 'experimental' }}
-        run: exit 1
-
-      - name: Perform some tests
-        run: |
-          echo "Running tests on OS ${{ matrix.os }} and NodeJS ${{ matrix.node }}"
-          sleep 10
-
-      - name: Upload test results
-        run: echo "Uploading test results"
+      - name: Dummy step
+        run: echo "${{ matrix.color }}-${{ matrix.shape }}-${{ matrix.size }}"
