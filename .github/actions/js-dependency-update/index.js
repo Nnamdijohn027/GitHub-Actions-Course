@@ -1,5 +1,6 @@
 const core = require('@actions/core');
 const exec = require('@actions/exec');
+const github = require('@actions/github');
 
 async function run() {
   try {
@@ -27,7 +28,6 @@ async function run() {
       return;
     }
 
-    // Print inputs
     core.info(`Base branch: ${baseBranch}`);
     core.info(`Target branch: ${targetBranch}`);
     core.info(`Working directory: ${workingDirectory}`);
@@ -35,11 +35,39 @@ async function run() {
     // Update NPM dependencies
     await exec.exec('npm', ['update'], { cwd: workingDirectory });
 
-    // Check if there are changes to package files
+    // Check for changes to package files
     const { stdout: gitStatusOutput } = await exec.getExecOutput('git', ['status', '-s', 'package*.json'], { cwd: workingDirectory });
 
     if (gitStatusOutput.trim()) {
       core.info('There are updates available.');
+
+      // Create a new branch for dependency updates
+      await exec.exec('git', ['checkout', '-b', targetBranch]);
+
+      // Stage and commit changes
+      await exec.exec('git', ['add', 'package.json', 'package-lock.json'], { cwd: workingDirectory });
+      await exec.exec('git', ['commit', '-m', 'Update NPM dependencies'], { cwd: workingDirectory });
+
+      // Push changes to the remote branch
+      await exec.exec('git', ['push', '-u', 'origin', targetBranch], { cwd: workingDirectory });
+
+      // Initialize Octokit
+      const octokit = github.getOctokit(ghToken);
+
+      // Create Pull Request
+      try {
+        await octokit.rest.pulls.create({
+          owner: github.context.repo.owner,
+          repo: github.context.repo.repo,
+          title: 'Update NPM dependencies',
+          body: 'This pull request updates NPM packages',
+          base: baseBranch,
+          head: targetBranch
+        });
+      } catch (e) {
+        core.error('[js-dependency-update] : Error while creating the PR. A PR may already be open.');
+        core.setFailed(e.message);
+      }
     } else {
       core.info('No updates at this point in time.');
     }
