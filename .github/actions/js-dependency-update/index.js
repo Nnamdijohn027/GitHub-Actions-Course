@@ -1,6 +1,7 @@
 const core = require('@actions/core');
 const exec = require('@actions/exec');
 const github = require('@actions/github');
+const dirPattern = /^(\.\/)?[a-zA-Z0-9_/-]+$/;
 
 async function run() {
   try {
