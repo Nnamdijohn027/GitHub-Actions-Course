@@ -13,6 +13,7 @@ on:
         required: false
       working-dir:
         description: 'The working directory of the project to check for dependency updates.'
+        default: './17-custom-actions/react-app'
         required: true
       debug:
         description: 'Whether to output debug messages to the console.'
