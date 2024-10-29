@@ -1,26 +1,19 @@
-name: Ping URL
-
-description: "Ping URL until maximum trials have exceeded. If result is not 200 until then, fails the action."
-
+name: 'Ping URL Action'
+description: 'Custom action to ping a URL'
 inputs:
-  URL:
-    description: "URL to ping"
+  url:
+    description: 'The URL to ping'
     required: true
-
+    default: 'https://example.com'  # Default URL
+    # Specify choices in the description for user clarity, but not as options
   max_trials:
-    description: "Maximum number of trials until action fails"
-    default: "10"
+    description: 'Maximum trials until action fails'
     required: false
-
-  Delay:
-    description: "Delay in seconds between trials"
-    default: "10"
+    default: '10'  # Default value if not provided
+  delay:
+    description: 'Delay in seconds between trials'
     required: false
-
+    default: '5'  # Default value if not provided
 runs:
   using: 'docker'
-  image: 'Dockerfile'   
-
-
-
-
+  image: 'Dockerfile'
