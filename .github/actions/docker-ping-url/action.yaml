@@ -9,11 +9,11 @@ inputs:
   max_trials:
     description: "Maximum number of ping trials"
     required: true
-    default: 5
+    default: "5"
   delay:
     description: "Delay in seconds between each ping"
     required: true
-    default: 1
+    default: "1"
 runs:
   using: "docker"
   image: "Dockerfile"
