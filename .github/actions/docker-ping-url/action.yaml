@@ -1,19 +1,23 @@
-name: 'Ping URL Action'
-description: 'Custom action to ping a URL'
+# .github/actions/docker-ping-url/action.yml
+
+name: "Ping URL"
+description: "Pings a URL for a specified number of trials with a delay between each"
 inputs:
   url:
-    description: 'The URL to ping'
+    description: "URL to ping"
     required: true
-    default: 'https://example.com'  # Default URL
-    # Specify choices in the description for user clarity, but not as options
   max_trials:
-    description: 'Maximum trials until action fails'
-    required: false
-    default: '10'  # Default value if not provided
+    description: "Maximum number of ping trials"
+    required: true
+    default: 5
   delay:
-    description: 'Delay in seconds between trials'
-    required: false
-    default: '5'  # Default value if not provided
+    description: "Delay in seconds between each ping"
+    required: true
+    default: 1
 runs:
-  using: 'docker'
-  image: 'Dockerfile'
+  using: "docker"
+  image: "Dockerfile"
+  args:
+    - ${{ inputs.url }}
+    - ${{ inputs.max_trials }}
+    - ${{ inputs.delay }}
